@@ -1,16 +1,13 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMutation } from "@blitzjs/rpc";
-import Layout from "app/core/layouts/Layout";
-import createWishlist from "app/wishlists/mutations/createWishlist";
-import {
-  WishlistForm,
-  FORM_ERROR,
-} from "app/wishlists/components/WishlistForm";
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useMutation } from "@blitzjs/rpc"
+import Layout from "app/core/layouts/Layout"
+import createWishlist from "app/wishlists/mutations/createWishlist"
+import { WishlistForm, FORM_ERROR } from "app/wishlists/components/WishlistForm"
 
 const NewWishlistPage = () => {
-  const router = useRouter();
-  const [createWishlistMutation] = useMutation(createWishlist);
+  const router = useRouter()
+  const [createWishlistMutation] = useMutation(createWishlist)
 
   return (
     <Layout title={"Create New Wishlist"}>
@@ -25,16 +22,16 @@ const NewWishlistPage = () => {
         // initialValues={{}}
         onSubmit={async (values) => {
           try {
-            const wishlist = await createWishlistMutation(values);
+            const wishlist = await createWishlistMutation(values)
             router.push({
               pathname: `/wishlists/[wishlistId]`,
               query: { wishlistId: wishlist.id },
-            });
+            })
           } catch (error: any) {
-            console.error(error);
+            console.error(error)
             return {
               [FORM_ERROR]: error.toString(),
-            };
+            }
           }
         }}
       />
@@ -45,9 +42,9 @@ const NewWishlistPage = () => {
         </Link>
       </p>
     </Layout>
-  );
-};
+  )
+}
 
-NewWishlistPage.authenticate = true;
+NewWishlistPage.authenticate = true
 
-export default NewWishlistPage;
+export default NewWishlistPage
