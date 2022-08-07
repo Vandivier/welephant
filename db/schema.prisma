@@ -27,6 +27,20 @@ model User {
   wishlistItems  WishlistItem[] @relation("user-wished-items")
   purchasedItems WishlistItem[] @relation("user-purchased-items")
   wishlist       Wishlist?      @relation("user-wished-list")
+
+  // TODO: uncomment after PG migration
+  //
+  // WeventYeses  Wevent[] @relation("users-yeses", fields: [weventYesIds], references: [id])
+  // weventYesIds Int[]
+
+  // WeventNoes  Wevent[] @relation("users-noes", fields: [weventNoIds], references: [id])
+  // weventNoIds Int[]
+
+  // WeventMaybes   Wevent[] @relation("users-maybes", fields: [weventMaybeIds], references: [id])
+  // weventMaybeIds Int[]
+
+  // WeventUndeclareds   Wevent[] @relation("users-undeclareds", fields: [weventUndeclaredIds], references: [id])
+  // weventUndeclaredIds Int[]
 }
 
 model Session {
@@ -99,3 +113,23 @@ model Wishlist {
   wisher       User @relation(fields: [userIdWisher], name: "user-wished-list", references: [id])
   userIdWisher Int  @unique
 }
+
+// TODO: uncomment after PG migration
+// model Wevent {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   name      String
+//   eventTime DateTime
+
+//   // yeses User[] @relation("users-yeses", fields: [userIdsYes], references: [id])
+//   userIdsYes Int[]
+//   // @relation(fields:, name: "users-yeses", references: [id])
+
+//   noes User[] @relation(name: "users-noes", references: [id])
+
+//   maybes User[] @relation(name: "users-maybes", references: [id])
+
+//   undeclareds User[] @relation(name: "users-undeclareds", references: [id])
+
+// }
