@@ -1,16 +1,13 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useMutation } from "@blitzjs/rpc";
-import Layout from "app/core/layouts/Layout";
-import createWishlistItem from "app/wishlist-items/mutations/createWishlistItem";
-import {
-  WishlistItemForm,
-  FORM_ERROR,
-} from "app/wishlist-items/components/WishlistItemForm";
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useMutation } from "@blitzjs/rpc"
+import Layout from "app/core/layouts/Layout"
+import createWishlistItem from "app/wishlist-items/mutations/createWishlistItem"
+import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/WishlistItemForm"
 
 const NewWishlistItemPage = () => {
-  const router = useRouter();
-  const [createWishlistItemMutation] = useMutation(createWishlistItem);
+  const router = useRouter()
+  const [createWishlistItemMutation] = useMutation(createWishlistItem)
 
   return (
     <Layout title={"Create New WishlistItem"}>
@@ -25,16 +22,16 @@ const NewWishlistItemPage = () => {
         // initialValues={{}}
         onSubmit={async (values) => {
           try {
-            const wishlistItem = await createWishlistItemMutation(values);
-            router.push({
+            const wishlistItem = await createWishlistItemMutation(values)
+            await router.push({
               pathname: `/wishlistItems/[wishlistItemId]`,
               query: { wishlistItemId: wishlistItem.id },
-            });
+            })
           } catch (error: any) {
-            console.error(error);
+            console.error(error)
             return {
               [FORM_ERROR]: error.toString(),
-            };
+            }
           }
         }}
       />
@@ -45,9 +42,9 @@ const NewWishlistItemPage = () => {
         </Link>
       </p>
     </Layout>
-  );
-};
+  )
+}
 
-NewWishlistItemPage.authenticate = true;
+NewWishlistItemPage.authenticate = true
 
-export default NewWishlistItemPage;
+export default NewWishlistItemPage

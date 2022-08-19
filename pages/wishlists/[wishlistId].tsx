@@ -1,20 +1,20 @@
-import { Suspense } from "react";
+import { Suspense } from "react"
 
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import Head from "next/head"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useQuery, useMutation } from "@blitzjs/rpc"
+import { useParam } from "@blitzjs/next"
 
-import Layout from "app/core/layouts/Layout";
-import getWishlist from "app/wishlists/queries/getWishlist";
-import deleteWishlist from "app/wishlists/mutations/deleteWishlist";
+import Layout from "app/core/layouts/Layout"
+import getWishlist from "app/wishlists/queries/getWishlist"
+import deleteWishlist from "app/wishlists/mutations/deleteWishlist"
 
 export const Wishlist = () => {
-  const router = useRouter();
-  const wishlistId = useParam("wishlistId", "number");
-  const [deleteWishlistMutation] = useMutation(deleteWishlist);
-  const [wishlist] = useQuery(getWishlist, { id: wishlistId });
+  const router = useRouter()
+  const wishlistId = useParam("wishlistId", "number")
+  const [deleteWishlistMutation] = useMutation(deleteWishlist)
+  const [wishlist] = useQuery(getWishlist, { id: wishlistId })
 
   return (
     <>
@@ -39,8 +39,8 @@ export const Wishlist = () => {
           type="button"
           onClick={async () => {
             if (window.confirm("This will be deleted")) {
-              await deleteWishlistMutation({ id: wishlist.id });
-              router.push({ pathname: "/wishlists" });
+              await deleteWishlistMutation({ id: wishlist.id })
+              await router.push({ pathname: "/wishlists" })
             }
           }}
           style={{ marginLeft: "0.5rem" }}
@@ -49,8 +49,8 @@ export const Wishlist = () => {
         </button>
       </div>
     </>
-  );
-};
+  )
+}
 
 const ShowWishlistPage = () => {
   return (
@@ -65,10 +65,10 @@ const ShowWishlistPage = () => {
         <Wishlist />
       </Suspense>
     </div>
-  );
-};
+  )
+}
 
-ShowWishlistPage.authenticate = true;
-ShowWishlistPage.getLayout = (page) => <Layout>{page}</Layout>;
+ShowWishlistPage.authenticate = true
+ShowWishlistPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default ShowWishlistPage;
+export default ShowWishlistPage
