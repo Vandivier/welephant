@@ -1,20 +1,20 @@
-import { Suspense } from "react";
+import { Suspense } from "react"
 
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import Head from "next/head"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useQuery, useMutation } from "@blitzjs/rpc"
+import { useParam } from "@blitzjs/next"
 
-import Layout from "app/core/layouts/Layout";
-import getWishlistItem from "app/wishlist-items/queries/getWishlistItem";
-import deleteWishlistItem from "app/wishlist-items/mutations/deleteWishlistItem";
+import Layout from "app/core/layouts/Layout"
+import getWishlistItem from "app/wishlist-items/queries/getWishlistItem"
+import deleteWishlistItem from "app/wishlist-items/mutations/deleteWishlistItem"
 
 export const WishlistItem = () => {
-  const router = useRouter();
-  const wishlistItemId = useParam("wishlistItemId", "number");
-  const [deleteWishlistItemMutation] = useMutation(deleteWishlistItem);
-  const [wishlistItem] = useQuery(getWishlistItem, { id: wishlistItemId });
+  const router = useRouter()
+  const wishlistItemId = useParam("wishlistItemId", "number")
+  const [deleteWishlistItemMutation] = useMutation(deleteWishlistItem)
+  const [wishlistItem] = useQuery(getWishlistItem, { id: wishlistItemId })
 
   return (
     <>
@@ -39,8 +39,8 @@ export const WishlistItem = () => {
           type="button"
           onClick={async () => {
             if (window.confirm("This will be deleted")) {
-              await deleteWishlistItemMutation({ id: wishlistItem.id });
-              router.push({ pathname: "/wishlistItems" });
+              await deleteWishlistItemMutation({ id: wishlistItem.id })
+              await router.push({ pathname: "/wishlistItems" })
             }
           }}
           style={{ marginLeft: "0.5rem" }}
@@ -49,8 +49,8 @@ export const WishlistItem = () => {
         </button>
       </div>
     </>
-  );
-};
+  )
+}
 
 const ShowWishlistItemPage = () => {
   return (
@@ -65,10 +65,10 @@ const ShowWishlistItemPage = () => {
         <WishlistItem />
       </Suspense>
     </div>
-  );
-};
+  )
+}
 
-ShowWishlistItemPage.authenticate = true;
-ShowWishlistItemPage.getLayout = (page) => <Layout>{page}</Layout>;
+ShowWishlistItemPage.authenticate = true
+ShowWishlistItemPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default ShowWishlistItemPage;
+export default ShowWishlistItemPage

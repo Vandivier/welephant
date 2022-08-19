@@ -23,7 +23,7 @@ const NewWishlistPage = () => {
         onSubmit={async (values) => {
           try {
             const wishlist = await createWishlistMutation(values)
-            router.push({
+            await router.push({
               pathname: `/wishlists/[wishlistId]`,
               query: { wishlistId: wishlist.id },
             })

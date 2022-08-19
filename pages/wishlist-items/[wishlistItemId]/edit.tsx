@@ -1,21 +1,18 @@
-import { Suspense } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import { Suspense } from "react"
+import Head from "next/head"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useQuery, useMutation } from "@blitzjs/rpc"
+import { useParam } from "@blitzjs/next"
 
-import Layout from "app/core/layouts/Layout";
-import getWishlistItem from "app/wishlist-items/queries/getWishlistItem";
-import updateWishlistItem from "app/wishlist-items/mutations/updateWishlistItem";
-import {
-  WishlistItemForm,
-  FORM_ERROR,
-} from "app/wishlist-items/components/WishlistItemForm";
+import Layout from "app/core/layouts/Layout"
+import getWishlistItem from "app/wishlist-items/queries/getWishlistItem"
+import updateWishlistItem from "app/wishlist-items/mutations/updateWishlistItem"
+import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/WishlistItemForm"
 
 export const EditWishlistItem = () => {
-  const router = useRouter();
-  const wishlistItemId = useParam("wishlistItemId", "number");
+  const router = useRouter()
+  const wishlistItemId = useParam("wishlistItemId", "number")
   const [wishlistItem, { setQueryData }] = useQuery(
     getWishlistItem,
     { id: wishlistItemId },
@@ -23,8 +20,8 @@ export const EditWishlistItem = () => {
       // This ensures the query never refreshes and overwrites the form data while the user is editing.
       staleTime: Infinity,
     }
-  );
-  const [updateWishlistItemMutation] = useMutation(updateWishlistItem);
+  )
+  const [updateWishlistItemMutation] = useMutation(updateWishlistItem)
 
   return (
     <>
@@ -48,24 +45,24 @@ export const EditWishlistItem = () => {
               const updated = await updateWishlistItemMutation({
                 id: wishlistItem.id,
                 ...values,
-              });
-              await setQueryData(updated);
-              router.push({
+              })
+              await setQueryData(updated)
+              await router.push({
                 pathname: `/wishlistItems/[wishlistItemId]`,
                 query: { wishlistItemId: updated.id },
-              });
+              })
             } catch (error: any) {
-              console.error(error);
+              console.error(error)
               return {
                 [FORM_ERROR]: error.toString(),
-              };
+              }
             }
           }}
         />
       </div>
     </>
-  );
-};
+  )
+}
 
 const EditWishlistItemPage = () => {
   return (
@@ -80,10 +77,10 @@ const EditWishlistItemPage = () => {
         </Link>
       </p>
     </div>
-  );
-};
+  )
+}
 
-EditWishlistItemPage.authenticate = true;
-EditWishlistItemPage.getLayout = (page) => <Layout>{page}</Layout>;
+EditWishlistItemPage.authenticate = true
+EditWishlistItemPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default EditWishlistItemPage;
+export default EditWishlistItemPage
