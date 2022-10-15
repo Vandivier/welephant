@@ -1,9 +1,9 @@
-import {ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps} from "@blitzjs/next"
-import {AuthenticationError, AuthorizationError} from "blitz"
+import { ErrorFallbackProps, ErrorComponent, ErrorBoundary, AppProps } from "@blitzjs/next"
+import { AuthenticationError, AuthorizationError } from "blitz"
 import React from "react"
-import {withBlitz} from "app/blitz-client"
+import { withBlitz } from "app/blitz-client"
 
-function RootErrorFallback({error}: ErrorFallbackProps) {
+function RootErrorFallback({ error }: ErrorFallbackProps) {
   if (error instanceof AuthenticationError) {
     return <div>Error: You are not authenticated</div>
   } else if (error instanceof AuthorizationError) {
@@ -23,10 +23,11 @@ function RootErrorFallback({error}: ErrorFallbackProps) {
   }
 }
 
-function MyApp({Component, pageProps}: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
+  const getLayout = Component.getLayout || ((page) => page)
   return (
     <ErrorBoundary FallbackComponent={RootErrorFallback}>
-      <Component {...pageProps} />
+      {getLayout(<Component {...pageProps} />)}
     </ErrorBoundary>
   )
 }

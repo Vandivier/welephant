@@ -10,7 +10,7 @@ Create a wishlist across websites and share that with others at a white elephant
 
 This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
 
-# \***\*name\*\***
+# ****name****
 
 ## Getting Started
 
@@ -98,8 +98,6 @@ welephant
 │   │   ├── components/
 │   │   │   ├── Form.tsx
 │   │   │   └── LabeledTextField.tsx
-│   │   ├── hooks/
-│   │   │   └── useCurrentUser.ts
 │   │   └── layouts/
 │   │       └── Layout.tsx
 │   ├── pages/
@@ -109,6 +107,8 @@ welephant
 │   │   ├── index.test.tsx
 │   │   └── index.tsx
 │   └── users/
+│       ├── hooks/
+│       │   └── useCurrentUser.ts
 │       └── queries/
 │           └── getCurrentUser.ts
 ├── db/
