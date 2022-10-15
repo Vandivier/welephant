@@ -108,12 +108,16 @@ type RenderHook = DefaultHookParams[0]
 // The fallback method for database resets failed, meaning Migrate could not clean up the database entirely
 // note: I gave db user grant all and still got the perm err
 // note: even i (web admin) don't have perms on `permission denied for table pg_statistic`
+// note: supabase doesn't have this issue, but they will pause ur db after a while
 export const deleteExampleUser = async () => {
   const userData = {
     where: {
       email: "user@example.com",
     },
   }
+
+  const dbDomain = process.env.DATABASE_URL?.match(/@.*\//)
+  console.log({ dbDomain: dbDomain && dbDomain[0] })
 
   // wipe test users
   const maybeUser = await db.user.findUnique({ ...userData })
