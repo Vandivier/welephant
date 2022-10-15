@@ -3,16 +3,20 @@ import { hash256 } from "@blitzjs/auth"
 import forgotPassword from "./forgotPassword"
 import previewEmail from "preview-email"
 import { Ctx } from "@blitzjs/next"
+import { deleteExampleUser } from "test/utils"
 
 beforeEach(async () => {
-  await db.$reset()
+  // TODO: await db.$reset() instead of await deleteExampleUser()
+  await deleteExampleUser()
 })
 
 const generatedToken = "plain-token"
+
 jest.mock("@blitzjs/auth", () => ({
   ...jest.requireActual<Record<string, unknown>>("@blitzjs/auth")!,
   generateToken: () => generatedToken,
 }))
+
 jest.mock("preview-email", () => jest.fn())
 
 describe("forgotPassword mutation", () => {

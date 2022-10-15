@@ -1,3 +1,4 @@
+import db from "db"
 import { render as defaultRender } from "@testing-library/react"
 import { renderHook as defaultRenderHook } from "@testing-library/react-hooks"
 import { NextRouter } from "next/router"
@@ -102,3 +103,26 @@ type RenderOptions = DefaultParams[1] & { router?: Partial<NextRouter>; dehydrat
 
 type DefaultHookParams = Parameters<typeof defaultRenderHook>
 type RenderHook = DefaultHookParams[0]
+
+// TODO: try using a shadow DB to fix the below err:
+// The fallback method for database resets failed, meaning Migrate could not clean up the database entirely
+// note: I gave db user grant all and still got the perm err
+// note: even i (web admin) don't have perms on `permission denied for table pg_statistic`
+export const deleteExampleUser = async () => {
+  const userData = {
+    where: {
+      email: "user@example.com",
+    },
+  }
+
+  // wipe test users
+  const maybeUser = await db.user.findUnique({ ...userData })
+  if (maybeUser) {
+    await db.token.deleteMany({
+      where: {
+        userId: maybeUser.id,
+      },
+    })
+    await db.user.delete({ ...userData })
+  }
+}

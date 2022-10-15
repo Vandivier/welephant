@@ -1,9 +1,11 @@
 import resetPassword from "./resetPassword"
 import db from "db"
 import { SecurePassword, hash256 } from "@blitzjs/auth"
+import { deleteExampleUser } from "test/utils"
 
 beforeEach(async () => {
-  await db.$reset()
+  // TODO: await db.$reset() instead of await deleteExampleUser()
+  await deleteExampleUser()
 })
 
 const mockCtx: any = {
