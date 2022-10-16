@@ -5,7 +5,7 @@ import Layout from "app/core/layouts/Layout"
 import createWishlistItem from "app/wishlist-items/mutations/createWishlistItem"
 import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/WishlistItemForm"
 
-const NewWishlistItemPage = () => {
+const NewWishlistItemOrphanPage = () => {
   const router = useRouter()
   const [createWishlistItemMutation] = useMutation(createWishlistItem)
 
@@ -49,6 +49,6 @@ const NewWishlistItemPage = () => {
   )
 }
 
-NewWishlistItemPage.authenticate = true
+NewWishlistItemOrphanPage.authenticate = true
 
-export default NewWishlistItemPage
+export default NewWishlistItemOrphanPage

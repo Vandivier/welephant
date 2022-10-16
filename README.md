@@ -4,15 +4,9 @@
 
 Create a wishlist across websites and share that with others at a white elephant party or other event! Maybe even a wedding??
 
-# Built with Blitz.js
-
-[![Blitz.js](https://raw.githubusercontent.com/blitz-js/art/master/github-cover-photo.png)](https://blitzjs.com)
+## Getting Started
 
 This is a [Blitz.js](https://github.com/blitz-js/blitz) app.
-
-# ****name****
-
-## Getting Started
 
 Run your app in the development mode.
 
