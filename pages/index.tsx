@@ -4,7 +4,7 @@ import Link from "next/link"
 import Layout from "app/core/layouts/Layout"
 import { useCurrentUser } from "app/users/hooks/useCurrentUser"
 import logout from "app/auth/mutations/logout"
-import logo from "public/logo.png"
+import logo from "public/wele-boi.png"
 import { useMutation } from "@blitzjs/rpc"
 import { Routes, BlitzPage } from "@blitzjs/next"
 
@@ -58,16 +58,26 @@ const Home: BlitzPage = () => {
     <Layout title="Home">
       <div className="container">
         <main>
-          {/* <div className="logo">
-            TODO: welephant pic
-            <Image src={`${logo.src}`} alt="blitzjs" width="256px" height="118px" layout="fixed" />
-          </div> */}
+          <div className="logo">
+            {/* <div className="logo" style={{ height: "1vh", width: "1vw" }}> */}
+            <Image
+              src={`${logo.src}`}
+              alt="welephant logo"
+              width="250px"
+              height="249px"
+              layout="fixed"
+            />
+          </div>
           <p style={{ marginBottom: 0 }}>
             <strong>Welcome to Welephant!</strong>
           </p>
           <p style={{ marginTop: 0 }}>
             A{" "}
-            <a href="https://en.wikipedia.org/w/index.php?title=White_elephant&oldid=1107958304">
+            <a
+              href="https://en.wikipedia.org/w/index.php?title=White_elephant&oldid=1107958304"
+              target="_blank"
+              rel="noreferrer"
+            >
               white elephant gift exchange
             </a>{" "}
             assistant / party planner / thingy.
@@ -206,10 +216,6 @@ const Home: BlitzPage = () => {
 
           .logo {
             margin-bottom: 2rem;
-          }
-
-          .logo img {
-            width: 300px;
           }
 
           .buttons {
