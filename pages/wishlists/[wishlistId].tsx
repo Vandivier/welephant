@@ -10,7 +10,7 @@ import Layout from "app/core/layouts/Layout"
 import getWishlist from "app/wishlists/queries/getWishlist"
 import deleteWishlist from "app/wishlists/mutations/deleteWishlist"
 
-export const Wishlist = () => {
+export const WishlistDetailsPage = () => {
   const router = useRouter()
   const wishlistId = useParam("wishlistId", "number")
   const [deleteWishlistMutation] = useMutation(deleteWishlist)
@@ -25,6 +25,15 @@ export const Wishlist = () => {
       <div>
         <h1>Wishlist {wishlist.id}</h1>
         <pre>{JSON.stringify(wishlist, null, 2)}</pre>
+
+        <Link
+          href={{
+            pathname: "/wishlist-items/new/[wishlistId]",
+            query: { wishlistId: wishlist.id },
+          }}
+        >
+          <a className="button display-block small width-180">Add Item to Wishlist</a>
+        </Link>
 
         <Link
           href={{
@@ -48,6 +57,29 @@ export const Wishlist = () => {
           Delete
         </button>
       </div>
+
+      <style jsx global>{`
+        .button {
+          background-color: #6700eb;
+          color: #f4f4f4;
+          cursor: pointer;
+          font-size: 1rem;
+          padding: 1rem 2rem;
+          text-align: center;
+        }
+
+        .button.small {
+          padding: 0.5rem 1rem;
+        }
+
+        .width-180 {
+          width: 180px;
+        }
+
+        .display-block {
+          display: block;
+        }
+      `}</style>
     </>
   )
 }
@@ -62,7 +94,7 @@ const ShowWishlistPage = () => {
       </p>
 
       <Suspense fallback={<div>Loading...</div>}>
-        <Wishlist />
+        <WishlistDetailsPage />
       </Suspense>
     </div>
   )

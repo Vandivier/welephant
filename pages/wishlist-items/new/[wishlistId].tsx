@@ -12,6 +12,7 @@ const NewWishlistItemPage = () => {
   return (
     <Layout title={"Create New WishlistItem"}>
       <h1>Create New WishlistItem</h1>
+      <p>This item will be added to the wishlist referenced by ID in the URL</p>
 
       <WishlistItemForm
         submitText="Create WishlistItem"
