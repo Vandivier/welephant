@@ -40,7 +40,7 @@ const NewWishlistItemForWishlistPage = () => {
           try {
             const wishlistItem = await createWishlistItemMutation({ ...values, wishlistId })
             await router.push({
-              pathname: `/wishlistItems/[wishlistItemId]`,
+              pathname: `/wishlist-items/[wishlistItemId]`,
               query: { wishlistItemId: wishlistItem.id },
             })
           } catch (error: any) {
@@ -53,7 +53,7 @@ const NewWishlistItemForWishlistPage = () => {
       />
 
       <p>
-        <Link href={{ pathname: "/wishlistItems" }}>
+        <Link href={{ pathname: "/wishlist-items" }}>
           <a>WishlistItems</a>
         </Link>
       </p>

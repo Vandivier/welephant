@@ -27,7 +27,7 @@ export const WishlistItemsList = () => {
           <li key={wishlistItem.id}>
             <Link
               href={{
-                pathname: "/wishlistItems/[wishlistItemId]",
+                pathname: "/wishlist-items/[wishlistItemId]",
                 query: { wishlistItemId: wishlistItem.id },
               }}
             >
@@ -56,7 +56,7 @@ const WishlistItemsPage = () => {
 
       <div>
         <p>
-          <Link href={{ pathname: "/wishlistItems/new" }}>
+          <Link href={{ pathname: "/wishlist-items/new" }}>
             <a>Create WishlistItem</a>
           </Link>
         </p>

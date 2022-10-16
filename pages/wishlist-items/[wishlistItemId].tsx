@@ -56,7 +56,7 @@ const ShowWishlistItemPage = () => {
   return (
     <div>
       <p>
-        <Link href={{ pathname: "/wishlistItems" }}>
+        <Link href={{ pathname: "/wishlist-items" }}>
           <a>WishlistItems</a>
         </Link>
       </p>
