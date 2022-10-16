@@ -7,17 +7,29 @@ import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/Wish
 import { useParam } from "@blitzjs/next"
 import getWishlist from "app/wishlists/queries/getWishlist"
 
-const NewWishlistItemForWishlistPage = () => {
+// ref: https://blitzjs.com/docs/redirects#on-the-server
+// ref: https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
+export const getServerSideProps = async (context) => {
+  const params = context?.params
+  const wishlistId = params.wishlistId
+
+  if (typeof wishlistId !== "number") {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    }
+  }
+
+  return { props: { wishlistId } }
+}
+
+const NewWishlistItemForWishlistPage = (props: { wishlistId: number }) => {
   const router = useRouter()
   const [createWishlistItemMutation] = useMutation(createWishlistItem)
-  const wishlistId = useParam("wishlistId", "number")
-  const [wishlist] = useQuery(
-    getWishlist,
-    { id: wishlistId },
-    {
-      staleTime: Infinity,
-    }
-  )
+  const wishlistId = props.wishlistId
+  const [wishlist] = useQuery(getWishlist, { id: wishlistId })
 
   return (
     <Layout title={"Create New WishlistItem"}>
