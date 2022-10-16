@@ -78,7 +78,7 @@ model WishlistItem {
 
   purchaser       User?     @relation(fields: [userIdPurchaser], name: "user-purchased-items", references: [id])
   purchasedAt     DateTime?
-  userIdPurchaser Int
+  userIdPurchaser Int?
 
   // possibly a redundant field
   // item wisher should always be in sync with wishlist wisher

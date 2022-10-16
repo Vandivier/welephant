@@ -1,17 +1,25 @@
-import { Ctx } from "blitz";
-import db from "db";
-import { z } from "zod";
+import { Ctx } from "blitz"
+import db, { Prisma } from "db"
+import { z } from "zod"
 
 const CreateWishlistItemInput = z.object({
   name: z.string(),
-});
+  // TODO: don't pass userIdPurchaser
+  userIdPurchaser: z.number(),
+  userIdWisher: z.number(),
+  wishlistId: z.number(),
+})
 
 export default async function CreateWishlistItem(input, ctx: Ctx) {
-  CreateWishlistItemInput.parse(input);
-  ctx.session.$isAuthorized();
+  ctx.session.$isAuthorized()
 
-  // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const wishlistItem = await db.wishlistItem.create({ data: input });
+  const loggedInUser = ctx.session.userId
+  const validated: Prisma.WishlistItemUncheckedCreateInput = CreateWishlistItemInput.parse({
+    ...input,
+    userIdPurchaser: loggedInUser,
+    userIdWisher: loggedInUser,
+  })
 
-  return wishlistItem;
+  const wishlistItem = await db.wishlistItem.create({ data: validated })
+  return wishlistItem
 }

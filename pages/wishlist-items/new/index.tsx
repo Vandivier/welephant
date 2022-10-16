@@ -5,6 +5,7 @@ import Layout from "app/core/layouts/Layout"
 import createWishlistItem from "app/wishlist-items/mutations/createWishlistItem"
 import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/WishlistItemForm"
 
+// TODO: deprecate this page OR add a wishlist dropdown on the form
 const NewWishlistItemOrphanPage = () => {
   const router = useRouter()
   const [createWishlistItemMutation] = useMutation(createWishlistItem)

@@ -1,24 +1,24 @@
-import { Suspense } from "react";
-import Head from "next/head";
-import Link from "next/link";
-import { usePaginatedQuery } from "@blitzjs/rpc";
-import { useRouter } from "next/router";
-import Layout from "app/core/layouts/Layout";
-import getWishlistItems from "app/wishlist-items/queries/getWishlistItems";
+import { Suspense } from "react"
+import Head from "next/head"
+import Link from "next/link"
+import { usePaginatedQuery } from "@blitzjs/rpc"
+import { useRouter } from "next/router"
+import Layout from "app/core/layouts/Layout"
+import getWishlistItems from "app/wishlist-items/queries/getWishlistItems"
 
-const ITEMS_PER_PAGE = 100;
+export const ITEMS_PER_PAGE = 100
 
 export const WishlistItemsList = () => {
-  const router = useRouter();
-  const page = Number(router.query.page) || 0;
+  const router = useRouter()
+  const page = Number(router.query.page) || 0
   const [{ wishlistItems, hasMore }] = usePaginatedQuery(getWishlistItems, {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
-  });
+  })
 
-  const goToPreviousPage = () => router.push({ query: { page: page - 1 } });
-  const goToNextPage = () => router.push({ query: { page: page + 1 } });
+  const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
+  const goToNextPage = () => router.push({ query: { page: page + 1 } })
 
   return (
     <div>
@@ -44,8 +44,8 @@ export const WishlistItemsList = () => {
         Next
       </button>
     </div>
-  );
-};
+  )
+}
 
 const WishlistItemsPage = () => {
   return (
@@ -66,7 +66,7 @@ const WishlistItemsPage = () => {
         </Suspense>
       </div>
     </Layout>
-  );
-};
+  )
+}
 
-export default WishlistItemsPage;
+export default WishlistItemsPage

@@ -3,18 +3,29 @@ import { Suspense } from "react"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
-import { useQuery, useMutation } from "@blitzjs/rpc"
+import { useQuery, useMutation, usePaginatedQuery } from "@blitzjs/rpc"
 import { useParam } from "@blitzjs/next"
 
 import Layout from "app/core/layouts/Layout"
 import getWishlist from "app/wishlists/queries/getWishlist"
 import deleteWishlist from "app/wishlists/mutations/deleteWishlist"
+import getWishlistItems from "app/wishlist-items/queries/getWishlistItems"
+
+import { ITEMS_PER_PAGE } from "pages/wishlist-items"
 
 export const WishlistDetailsPage = () => {
   const router = useRouter()
   const wishlistId = useParam("wishlistId", "number")
   const [deleteWishlistMutation] = useMutation(deleteWishlist)
   const [wishlist] = useQuery(getWishlist, { id: wishlistId })
+
+  // TODO: handle pagination, see #15
+  const page = 0
+  const [{ wishlistItems }] = usePaginatedQuery(getWishlistItems, {
+    orderBy: { id: "asc" },
+    skip: ITEMS_PER_PAGE * page,
+    take: ITEMS_PER_PAGE,
+  })
 
   return (
     <>
@@ -57,6 +68,15 @@ export const WishlistDetailsPage = () => {
           Delete
         </button>
       </div>
+
+      <section>
+        <h2>Items on this Wishlist</h2>
+        <ul>
+          {wishlistItems?.length
+            ? wishlistItems.map((item) => <li key={item.id}>{item.name}</li>)
+            : "None"}
+        </ul>
+      </section>
 
       <style jsx global>{`
         .button {
