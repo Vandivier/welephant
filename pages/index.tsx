@@ -58,11 +58,19 @@ const Home: BlitzPage = () => {
     <Layout title="Home">
       <div className="container">
         <main>
-          <div className="logo">
+          {/* <div className="logo">
+            TODO: welephant pic
             <Image src={`${logo.src}`} alt="blitzjs" width="256px" height="118px" layout="fixed" />
-          </div>
-          <p>
-            <strong>Congrats!</strong> Your app is ready, including user sign-up and log-in.
+          </div> */}
+          <p style={{ marginBottom: 0 }}>
+            <strong>Welcome to Welephant!</strong>
+          </p>
+          <p style={{ marginTop: 0 }}>
+            A{" "}
+            <a href="https://en.wikipedia.org/w/index.php?title=White_elephant&oldid=1107958304">
+              white elephant gift exchange
+            </a>{" "}
+            assistant / party planner / thingy.
           </p>
           <div className="buttons" style={{ marginTop: "1rem", marginBottom: "1rem" }}>
             <Suspense fallback="Loading...">
@@ -70,10 +78,10 @@ const Home: BlitzPage = () => {
             </Suspense>
           </div>
           <p>
-            <strong>
-              To add a new model to your app, <br />
-              run the following in your terminal:
-            </strong>
+            <strong>To create a new wishlist, push dis:</strong>
+            <a className="button display-block small" href="/wishlists">
+              <strong>Dis</strong>
+            </a>
           </p>
           <pre>
             <code>blitz generate all project name:string</code>
@@ -209,11 +217,13 @@ const Home: BlitzPage = () => {
             grid-auto-flow: column;
             grid-gap: 0.5rem;
           }
+
           .button {
-            font-size: 1rem;
             background-color: #6700eb;
-            padding: 1rem 2rem;
             color: #f4f4f4;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 1rem 2rem;
             text-align: center;
           }
 
@@ -264,6 +274,10 @@ const Home: BlitzPage = () => {
               width: 100%;
               flex-direction: column;
             }
+          }
+
+          .display-block {
+            display: block;
           }
         `}</style>
       </div>
