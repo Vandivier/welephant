@@ -4,7 +4,7 @@ import Link from "next/link"
 import Layout from "app/core/layouts/Layout"
 import { useCurrentUser } from "app/users/hooks/useCurrentUser"
 import logout from "app/auth/mutations/logout"
-import logo from "public/wele-boi.png"
+import logo from "public/wele-boi-logo.png"
 import { useMutation } from "@blitzjs/rpc"
 import { Routes, BlitzPage } from "@blitzjs/next"
 
