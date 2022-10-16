@@ -11,9 +11,9 @@ import getWishlist from "app/wishlists/queries/getWishlist"
 // ref: https://nextjs.org/docs/api-reference/data-fetching/get-server-side-props#context-parameter
 export const getServerSideProps = async (context) => {
   const params = context?.params
-  const wishlistId = params.wishlistId
+  const wishlistId = parseInt(params.wishlistId, 10)
 
-  if (typeof wishlistId !== "number") {
+  if (isNaN(wishlistId)) {
     return {
       redirect: {
         destination: "/",
