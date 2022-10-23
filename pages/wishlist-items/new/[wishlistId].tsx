@@ -4,7 +4,6 @@ import { useMutation, useQuery } from "@blitzjs/rpc"
 import Layout from "app/core/layouts/Layout"
 import createWishlistItem from "app/wishlist-items/mutations/createWishlistItem"
 import { WishlistItemForm, FORM_ERROR } from "app/wishlist-items/components/WishlistItemForm"
-import { useParam } from "@blitzjs/next"
 import getWishlist from "app/wishlists/queries/getWishlist"
 
 // ref: https://blitzjs.com/docs/redirects#on-the-server

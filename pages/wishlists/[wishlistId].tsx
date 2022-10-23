@@ -25,6 +25,7 @@ export const WishlistDetailsPage = () => {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
+    where: { wishlistId },
   })
 
   return (
