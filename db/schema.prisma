@@ -26,7 +26,7 @@ model User {
 
   wishlistItems  WishlistItem[] @relation("user-wished-items")
   purchasedItems WishlistItem[] @relation("user-purchased-items")
-  wishlist       Wishlist?      @relation("user-wished-list")
+  wishlists      Wishlist[]     @relation("user-wished-list")
 }
 
 model Session {
