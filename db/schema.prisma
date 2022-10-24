@@ -94,6 +94,7 @@ model Wishlist {
   createdAt DateTime       @default(now())
   updatedAt DateTime       @updatedAt
   name      String
+  notes     String         @default("")
   items     WishlistItem[]
 
   wisher       User @relation(fields: [userIdWisher], name: "user-wished-list", references: [id])
