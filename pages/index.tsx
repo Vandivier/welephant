@@ -31,6 +31,8 @@ const UserInfo = () => {
         <div>
           User id: <code>{currentUser.id}</code>
           <br />
+          User name: <code>{currentUser.name}</code>
+          <br />
           User role: <code>{currentUser.role}</code>
         </div>
       </>

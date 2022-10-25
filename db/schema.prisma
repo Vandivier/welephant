@@ -98,5 +98,5 @@ model Wishlist {
   items     WishlistItem[]
 
   wisher       User @relation(fields: [userIdWisher], name: "user-wished-list", references: [id])
-  userIdWisher Int  @unique
+  userIdWisher Int
 }

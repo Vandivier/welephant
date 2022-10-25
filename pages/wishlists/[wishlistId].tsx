@@ -7,7 +7,7 @@ import { useQuery, useMutation, usePaginatedQuery } from "@blitzjs/rpc"
 import { useParam } from "@blitzjs/next"
 
 import Layout from "app/core/layouts/Layout"
-import getWishlist from "app/wishlists/queries/getWishlist"
+import getWishlistWithWisher from "app/wishlists/queries/getWishlistWithWisher"
 import deleteWishlist from "app/wishlists/mutations/deleteWishlist"
 import getWishlistItems from "app/wishlist-items/queries/getWishlistItems"
 
@@ -17,7 +17,8 @@ export const WishlistDetailsPage = () => {
   const router = useRouter()
   const wishlistId = useParam("wishlistId", "number")
   const [deleteWishlistMutation] = useMutation(deleteWishlist)
-  const [wishlist] = useQuery(getWishlist, { id: wishlistId })
+  const [wishlist] = useQuery(getWishlistWithWisher, { id: wishlistId })
+  const wisher = wishlist.wisher
 
   // TODO: handle pagination, see #15
   const page = 0
@@ -31,12 +32,17 @@ export const WishlistDetailsPage = () => {
   return (
     <>
       <Head>
-        <title>Wishlist {wishlist.id}</title>
+        <title>{wishlist.name}</title>
       </Head>
 
       <div>
-        <h1>Wishlist {wishlist.id}</h1>
-        <pre>{JSON.stringify(wishlist, null, 2)}</pre>
+        <h1>{wishlist.name}</h1>
+        {wishlist.notes ? (
+          <>
+            <h2>Notes for this wishlist:</h2>
+            <p>{wishlist.notes}</p>
+          </>
+        ) : null}
 
         <Link
           href={{
@@ -71,10 +77,15 @@ export const WishlistDetailsPage = () => {
       </div>
 
       <section>
+        <h2>Wished by {wisher.name}</h2>
         <h2>Items on this Wishlist</h2>
         <ul>
           {wishlistItems?.length
-            ? wishlistItems.map((item) => <li key={item.id}>{item.name}</li>)
+            ? wishlistItems.map((item) => (
+                <li key={item.id}>
+                  <a href={`/wishlist-items/${item.id}`}>{item.name}</a>
+                </li>
+              ))
             : "None"}
         </ul>
       </section>

@@ -7,14 +7,14 @@ import { useQuery, useMutation } from "@blitzjs/rpc"
 import { useParam } from "@blitzjs/next"
 
 import Layout from "app/core/layouts/Layout"
-import getWishlistItem from "app/wishlist-items/queries/getWishlistItem"
+import getWishlistItemWithWisher from "app/wishlist-items/queries/getWishlistItemWithWisher"
 import deleteWishlistItem from "app/wishlist-items/mutations/deleteWishlistItem"
 
 export const WishlistItem = () => {
   const router = useRouter()
   const wishlistItemId = useParam("wishlistItemId", "number")
   const [deleteWishlistItemMutation] = useMutation(deleteWishlistItem)
-  const [wishlistItem] = useQuery(getWishlistItem, { id: wishlistItemId })
+  const [wishlistItem] = useQuery(getWishlistItemWithWisher, { id: wishlistItemId })
 
   return (
     <>
@@ -23,12 +23,17 @@ export const WishlistItem = () => {
       </Head>
 
       <div>
-        <h1>WishlistItem {wishlistItem.id}</h1>
-        <pre>{JSON.stringify(wishlistItem, null, 2)}</pre>
+        <h1>{wishlistItem.name}</h1>
+        <h2>Wished by {wishlistItem.wisher.name}</h2>
+        <p>
+          <Link href={{ pathname: `/wishlists/${wishlistItem.wishlistId}` }}>
+            <a>View all items in this wishlist</a>
+          </Link>
+        </p>
 
         <Link
           href={{
-            pathname: "/wishlistItems/[wishlistItemId]/edit",
+            pathname: "/wishlist-items/[wishlistItemId]/edit",
             query: { wishlistItemId: wishlistItem.id },
           }}
         >
@@ -40,7 +45,7 @@ export const WishlistItem = () => {
           onClick={async () => {
             if (window.confirm("This will be deleted")) {
               await deleteWishlistItemMutation({ id: wishlistItem.id })
-              await router.push({ pathname: "/wishlistItems" })
+              await router.push({ pathname: "/wishlist-items" })
             }
           }}
           style={{ marginLeft: "0.5rem" }}
@@ -56,8 +61,8 @@ const ShowWishlistItemPage = () => {
   return (
     <div>
       <p>
-        <Link href={{ pathname: "/wishlist-items" }}>
-          <a>WishlistItems</a>
+        <Link href={{ pathname: "/" }}>
+          <a>Return Home</a>
         </Link>
       </p>
 
