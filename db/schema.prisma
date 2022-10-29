@@ -101,6 +101,8 @@ model Party {
   hasGiftStealing    Boolean
   hasGiftAssignments Boolean
   assignedAt         DateTime?
+  eventDate          DateTime?
+  location           String        @default("")
   userId             Int
   creator            User          @relation(fields: [userId], references: [id])
   participants       Participant[]
