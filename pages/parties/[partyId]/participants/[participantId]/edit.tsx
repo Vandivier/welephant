@@ -1,22 +1,19 @@
-import { Suspense } from "react";
-import { Routes } from "@blitzjs/next";
-import Head from "next/head";
-import Link from "next/link";
-import { useRouter } from "next/router";
-import { useQuery, useMutation } from "@blitzjs/rpc";
-import { useParam } from "@blitzjs/next";
+import { Suspense } from "react"
+import { Routes } from "@blitzjs/next"
+import Head from "next/head"
+import Link from "next/link"
+import { useRouter } from "next/router"
+import { useQuery, useMutation } from "@blitzjs/rpc"
+import { useParam } from "@blitzjs/next"
 
-import Layout from "app/core/layouts/Layout";
-import getParticipant from "app/participants/queries/getParticipant";
-import updateParticipant from "app/participants/mutations/updateParticipant";
-import {
-  ParticipantForm,
-  FORM_ERROR,
-} from "app/participants/components/ParticipantForm";
+import Layout from "app/core/layouts/Layout"
+import getParticipant from "app/parties/participants/queries/getParticipant"
+import updateParticipant from "app/parties/participants/mutations/updateParticipant"
+import { ParticipantForm, FORM_ERROR } from "app/parties/participants/components/ParticipantForm"
 
 export const EditParticipant = () => {
-  const router = useRouter();
-  const participantId = useParam("participantId", "number");
+  const router = useRouter()
+  const participantId = useParam("participantId", "number")
   const [participant, { setQueryData }] = useQuery(
     getParticipant,
     { id: participantId },
@@ -24,8 +21,8 @@ export const EditParticipant = () => {
       // This ensures the query never refreshes and overwrites the form data while the user is editing.
       staleTime: Infinity,
     }
-  );
-  const [updateParticipantMutation] = useMutation(updateParticipant);
+  )
+  const [updateParticipantMutation] = useMutation(updateParticipant)
 
   return (
     <>
@@ -49,23 +46,21 @@ export const EditParticipant = () => {
               const updated = await updateParticipantMutation({
                 id: participant.id,
                 ...values,
-              });
-              await setQueryData(updated);
-              await router.push(
-                Routes.ShowParticipantPage({ participantId: updated.id })
-              );
+              })
+              await setQueryData(updated)
+              await router.push(Routes.ShowParticipantPage({ participantId: updated.id }))
             } catch (error: any) {
-              console.error(error);
+              console.error(error)
               return {
                 [FORM_ERROR]: error.toString(),
-              };
+              }
             }
           }}
         />
       </div>
     </>
-  );
-};
+  )
+}
 
 const EditParticipantPage = () => {
   return (
@@ -80,10 +75,10 @@ const EditParticipantPage = () => {
         </Link>
       </p>
     </div>
-  );
-};
+  )
+}
 
-EditParticipantPage.authenticate = true;
-EditParticipantPage.getLayout = (page) => <Layout>{page}</Layout>;
+EditParticipantPage.authenticate = true
+EditParticipantPage.getLayout = (page) => <Layout>{page}</Layout>
 
-export default EditParticipantPage;
+export default EditParticipantPage
