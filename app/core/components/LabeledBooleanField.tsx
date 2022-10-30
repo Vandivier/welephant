@@ -2,7 +2,6 @@ import { forwardRef, PropsWithoutRef, ComponentPropsWithoutRef } from "react"
 import { useFormContext } from "react-hook-form"
 
 export interface LabeledBooleanFieldProps extends PropsWithoutRef<JSX.IntrinsicElements["input"]> {
-  default?: boolean
   name: string
   label: string
   outerProps?: PropsWithoutRef<JSX.IntrinsicElements["div"]>
@@ -25,13 +24,7 @@ export const LabeledBooleanField = forwardRef<HTMLInputElement, LabeledBooleanFi
       <div {...outerProps}>
         <label {...labelProps}>
           {label}
-          <input
-            disabled={isSubmitting}
-            {...register(name)}
-            {...props}
-            type="checkbox"
-            checked={!!props.default}
-          />
+          <input disabled={isSubmitting} {...register(name)} {...props} type="checkbox" />
         </label>
 
         {error && (

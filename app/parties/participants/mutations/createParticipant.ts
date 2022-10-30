@@ -1,5 +1,5 @@
 import { resolver } from "@blitzjs/rpc"
-import db from "db"
+import db, { ParticipantStatus } from "db"
 import { z } from "zod"
 
 const CreateParticipant = z.object({
@@ -14,7 +14,12 @@ export default resolver.pipe(
   resolver.zod(CreateParticipant),
   resolver.authorize(),
   async (input) => {
-    const participant = await db.participant.create({ data: input })
+    const { isAttending, ...dataToKeep } = input
+    const status: ParticipantStatus = isAttending
+      ? ParticipantStatus.ACCEPTED
+      : ParticipantStatus.DECLINED
+    const massaged = { ...dataToKeep, status }
+    const participant = await db.participant.create({ data: massaged })
 
     return participant
   }

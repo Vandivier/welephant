@@ -1,4 +1,4 @@
-import { Routes, useParams } from "@blitzjs/next"
+import { Routes } from "@blitzjs/next"
 import Link from "next/link"
 import { NextRouter, useRouter } from "next/router"
 import { useMutation } from "@blitzjs/rpc"
@@ -35,6 +35,7 @@ const NewParticipantPage = () => {
       <h1>Create New Participant</h1>
 
       <ParticipantForm
+        initialValues={{ isAttending: true, isGifter: true }}
         submitText="Create Participant"
         onSubmit={async (values) => {
           try {

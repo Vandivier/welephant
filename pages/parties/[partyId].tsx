@@ -19,12 +19,17 @@ export const Party = () => {
   return (
     <>
       <Head>
-        <title>Party {party.id}</title>
+        <title>Party {party.name}</title>
       </Head>
 
       <div>
-        <h1>Party {party.id}</h1>
-        <pre>{JSON.stringify(party, null, 2)}</pre>
+        <h1>Party {party.name}</h1>
+        {party.notes ? (
+          <>
+            <h3>Some notes 📝for this party🎉</h3>
+            <p>{party.notes}</p>
+          </>
+        ) : null}
 
         <p>
           <Link href={Routes.ParticipantsPage({ partyId: party.id })}>

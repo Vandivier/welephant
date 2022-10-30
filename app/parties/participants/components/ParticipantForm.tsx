@@ -9,8 +9,8 @@ export function ParticipantForm<S extends z.ZodType<any, any>>(props: FormProps<
     <Form<S> {...props}>
       <LabeledTextField name="name" label="Name" placeholder="Name" />
       <LabeledTextField name="email" label="Email" placeholder="Email (Optional)" />
-      <LabeledBooleanField default={true} name="isAttending" label="I Plan to Attend" />
-      <LabeledBooleanField default={true} name="isGifter" label="I Plan to Buy a Gift" />
+      <LabeledBooleanField name="isAttending" label="I Plan to Attend" />
+      <LabeledBooleanField name="isGifter" label="I Plan to Buy a Gift" />
     </Form>
   )
 }
