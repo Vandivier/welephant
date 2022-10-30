@@ -11,10 +11,8 @@ import getParticipant from "app/parties/participants/queries/getParticipant"
 import updateParticipant from "app/parties/participants/mutations/updateParticipant"
 import { ParticipantForm, FORM_ERROR } from "app/parties/participants/components/ParticipantForm"
 
-export const EditParticipant = () => {
+export const EditParticipant = ({ partyId }: { partyId: number }) => {
   const router = useRouter()
-  const sPartyId = router.query?.partyId
-  const partyId = parseInt(typeof sPartyId === "string" ? sPartyId : "", 10)
   const participantId = useParam("participantId", "number")
   const [participant, { setQueryData }] = useQuery(
     getParticipant,
@@ -65,14 +63,17 @@ export const EditParticipant = () => {
 }
 
 const EditParticipantPage = () => {
+  const sPartyId = useParam("partyId", "string")
+  const partyId = parseInt(sPartyId || "", 10)
+
   return (
     <div>
       <Suspense fallback={<div>Loading...</div>}>
-        <EditParticipant />
+        <EditParticipant partyId={partyId} />
       </Suspense>
 
       <p>
-        <Link href={Routes.ParticipantsPage()}>
+        <Link href={Routes.ParticipantsPage({ partyId })}>
           <a>Participants</a>
         </Link>
       </p>
