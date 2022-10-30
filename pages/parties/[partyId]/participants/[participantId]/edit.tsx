@@ -13,6 +13,8 @@ import { ParticipantForm, FORM_ERROR } from "app/parties/participants/components
 
 export const EditParticipant = () => {
   const router = useRouter()
+  const sPartyId = router.query?.partyId
+  const partyId = parseInt(typeof sPartyId === "string" ? sPartyId : "", 10)
   const participantId = useParam("participantId", "number")
   const [participant, { setQueryData }] = useQuery(
     getParticipant,
@@ -48,7 +50,7 @@ export const EditParticipant = () => {
                 ...values,
               })
               await setQueryData(updated)
-              await router.push(Routes.ShowParticipantPage({ participantId: updated.id }))
+              await router.push(Routes.ShowParticipantPage({ partyId, participantId: updated.id }))
             } catch (error: any) {
               console.error(error)
               return {
