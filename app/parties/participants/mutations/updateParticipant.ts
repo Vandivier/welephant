@@ -6,7 +6,7 @@ const UpdateParticipant = z.object({
   id: z.number(),
   isAttending: z.boolean(),
   isGifter: z.boolean(),
-  email: z.string().optional(),
+  email: z.string().email().optional(),
   name: z.string(),
   partyId: z.number(),
 })
@@ -20,6 +20,10 @@ export default resolver.pipe(
       ? ParticipantStatus.ACCEPTED
       : ParticipantStatus.DECLINED
     const massaged = { ...dataToKeep, status }
+
+    if (data.isGifter && !data.email)
+      throw new Error("Email must be provided to register as a gifter.")
+
     const participant = await db.participant.update({ where: { id }, data: massaged })
 
     return participant

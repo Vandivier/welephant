@@ -5,7 +5,7 @@ import { z } from "zod"
 const CreateParticipant = z.object({
   isAttending: z.boolean(),
   isGifter: z.boolean(),
-  email: z.string().optional(),
+  email: z.string().email().optional(),
   name: z.string(),
   partyId: z.number(),
 })

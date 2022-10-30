@@ -9,7 +9,6 @@ import { useEffect } from "react"
 
 export const handleMissingPartyId = (partyId: number, router: NextRouter) => {
   const redirect = async () => {
-    console.log({ partyId })
     if (isNaN(partyId)) {
       await router.push(Routes.Home())
     }
