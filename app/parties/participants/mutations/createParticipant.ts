@@ -3,6 +3,8 @@ import db from "db"
 import { z } from "zod"
 
 const CreateParticipant = z.object({
+  isAttending: z.boolean(),
+  isGifter: z.boolean(),
   email: z.string().optional(),
   name: z.string(),
   partyId: z.number(),
