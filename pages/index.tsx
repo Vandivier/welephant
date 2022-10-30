@@ -31,6 +31,8 @@ const UserInfo = () => {
         <div>
           User id: <code>{currentUser.id}</code>
           <br />
+          User name: <code>{currentUser.name}</code>
+          <br />
           User role: <code>{currentUser.role}</code>
         </div>
       </>
@@ -88,9 +90,13 @@ const Home: BlitzPage = () => {
             </Suspense>
           </div>
           <p>
-            <strong>To create a new wishlist, push dis:</strong>
+            <a className="button display-block small" href="/parties">
+              <strong>To Parties</strong>
+            </a>
+          </p>
+          <p>
             <a className="button display-block small" href="/wishlists">
-              <strong>Dis</strong>
+              <strong>To Wishlists</strong>
             </a>
           </p>
           <div className="buttons" style={{ marginTop: "5rem" }}>

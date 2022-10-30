@@ -1,32 +1,27 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-datasource db {
-  provider = "postgres"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// --------------------------------------
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  name           String?
-  email          String   @unique
-  hashedPassword String?
-  role           String   @default("USER")
-
-  tokens   Token[]
-  sessions Session[]
-
-  wishlistItems  WishlistItem[] @relation("user-wished-items")
-  purchasedItems WishlistItem[] @relation("user-purchased-items")
-  wishlist       Wishlist?      @relation("user-wished-list")
+  id                  Int            @id @default(autoincrement())
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  name                String?
+  email               String         @unique
+  hashedPassword      String?
+  role                String         @default("USER")
+  participantProfiles Participant[]
+  parties             Party[]
+  sessions            Session[]
+  tokens              Token[]
+  wishlists           Wishlist[]     @relation("user-wished-list")
+  purchasedItems      WishlistItem[] @relation("user-purchased-items")
+  wishlistItems       WishlistItem[] @relation("user-wished-items")
 }
 
 model Session {
@@ -39,9 +34,8 @@ model Session {
   antiCSRFToken      String?
   publicData         String?
   privateData        String?
-
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  userId             Int?
+  user               User?     @relation(fields: [userId], references: [id])
 }
 
 model Token {
@@ -50,53 +44,74 @@ model Token {
   updatedAt   DateTime @updatedAt
   hashedToken String
   type        String
-  // See note below about TokenType enum
-  // type        TokenType
   expiresAt   DateTime
   sentTo      String
-
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
 
   @@unique([hashedToken, type])
 }
 
-// NOTE: It's highly recommended to use an enum for the token type
-//       but enums only work in Postgres.
-//       See: https://blitzjs.com/docs/database-overview#switch-to-postgre-sql
-// enum TokenType {
-//   RESET_PASSWORD
-// }
-
 model WishlistItem {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  description String?
-  url         String?
-
-  purchaser       User?     @relation(fields: [userIdPurchaser], name: "user-purchased-items", references: [id])
+  id              Int       @id @default(autoincrement())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  name            String
+  description     String?
+  url             String?
   purchasedAt     DateTime?
   userIdPurchaser Int?
-
-  // possibly a redundant field
-  // item wisher should always be in sync with wishlist wisher
-  wisher       User @relation(fields: [userIdWisher], name: "user-wished-items", references: [id])
-  userIdWisher Int
-
-  Wishlist   Wishlist @relation(fields: [wishlistId], references: [id])
-  wishlistId Int
+  userIdWisher    Int
+  wishlistId      Int
+  purchaser       User?     @relation("user-purchased-items", fields: [userIdPurchaser], references: [id])
+  wisher          User      @relation("user-wished-items", fields: [userIdWisher], references: [id])
+  Wishlist        Wishlist  @relation(fields: [wishlistId], references: [id])
 }
 
 model Wishlist {
-  id        Int            @id @default(autoincrement())
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
-  name      String
-  notes     String         @default("")
-  items     WishlistItem[]
+  id           Int            @id @default(autoincrement())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  name         String
+  userIdWisher Int
+  notes        String         @default("")
+  wisher       User           @relation("user-wished-list", fields: [userIdWisher], references: [id])
+  items        WishlistItem[]
+}
 
-  wisher       User @relation(fields: [userIdWisher], name: "user-wished-list", references: [id])
-  userIdWisher Int  @unique
+model Participant {
+  id        Int               @id @default(autoincrement())
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  isGifter  Boolean           @default(false)
+  name      String
+  email     String?
+  status    ParticipantStatus @default(PENDING)
+  partyId   Int
+  userId    Int?
+  Party     Party             @relation(fields: [partyId], references: [id])
+  User      User?             @relation(fields: [userId], references: [id])
+}
+
+model Party {
+  id                 Int           @id @default(autoincrement())
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  name               String
+  notes              String        @default("")
+  hasGiftStealing    Boolean
+  hasGiftAssignments Boolean
+  assignedAt         DateTime?
+  eventDate          DateTime?
+  location           String        @default("")
+  userId             Int
+  creator            User          @relation(fields: [userId], references: [id])
+  participants       Participant[]
+}
+
+enum ParticipantStatus {
+  ACCEPTED
+  DECLINED
+  MAYBE
+  PENDING
 }
