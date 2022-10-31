@@ -1,6 +1,7 @@
 import { resolver } from "@blitzjs/rpc"
-import db, { Participant, ParticipantStatus, Prisma, User } from "db"
+import db, { ParticipantStatus } from "db"
 import { z } from "zod"
+import { handleParticipantUserAssociation, MassagedParticipant } from "../utils"
 
 const UpdateParticipant = z.object({
   id: z.number(),
@@ -19,28 +20,10 @@ export default resolver.pipe(
     const status: ParticipantStatus = isAttending
       ? ParticipantStatus.ACCEPTED
       : ParticipantStatus.DECLINED
-    const massaged = { ...dataToKeep, status }
 
-    if (data.isGifter) {
-      if (data.email) {
-        const userToAssociate = await db.user.findUnique({ where: { email: data.email } })
-        let maybeAfterAssociation: Participant | null = null
-        const participant = await db.participant.update({ where: { id }, data: massaged })
-
-        if (userToAssociate) {
-          maybeAfterAssociation = await db.participant.update({
-            where: { id },
-            data: { User: { connect: { id: userToAssociate.id } } },
-          })
-        }
-
-        return maybeAfterAssociation || participant
-      } else {
-        throw new Error("Email must be provided to register as a gifter.")
-      }
-    }
-
-    const participant = await db.participant.update({ where: { id }, data: massaged })
+    const massaged: MassagedParticipant = { ...dataToKeep, status }
+    const participant = await db.participant.create({ data: massaged })
+    await handleParticipantUserAssociation(massaged, participant.id)
     return participant
   }
 )

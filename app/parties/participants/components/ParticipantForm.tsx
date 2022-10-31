@@ -10,7 +10,7 @@ export const RE_VALID_EMAIL = /.+@.+\.[a-z]+/
 
 export function ParticipantForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
   const [isGifter, setIsGifter] = React.useState(Boolean(props.initialValues?.isGifter))
-  const [email, setEmail] = React.useState("")
+  const [email, setEmail] = React.useState(String(props.initialValues?.email || ""))
   const hasValidEmail = RE_VALID_EMAIL.test(email)
 
   return (
