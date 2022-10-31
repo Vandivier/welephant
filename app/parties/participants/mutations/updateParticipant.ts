@@ -6,7 +6,7 @@ const UpdateParticipant = z.object({
   id: z.number(),
   isAttending: z.boolean(),
   isGifter: z.boolean(),
-  email: z.string().email().optional(),
+  email: z.string().email().optional().or(z.literal("")),
   name: z.string(),
   partyId: z.number(),
 })
