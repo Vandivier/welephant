@@ -8,13 +8,20 @@ import { useParam } from "@blitzjs/next"
 
 import Layout from "app/core/layouts/Layout"
 import getParty from "app/parties/queries/getParty"
+import assignGiftersWithinParty from "app/parties/mutations/assignGiftersWithinParty"
 import deleteParty from "app/parties/mutations/deleteParty"
+import React from "react"
+import { ERROR_STYLE } from "app/parties/participants/components/ParticipantForm"
+
+const ONE_REM_MARGIN = { margin: "1rem" }
 
 export const Party = () => {
   const router = useRouter()
   const partyId = useParam("partyId", "number")
+  const [assignGiftersMutation] = useMutation(assignGiftersWithinParty)
   const [deletePartyMutation] = useMutation(deleteParty)
   const [party] = useQuery(getParty, { id: partyId })
+  const [assignmentError, setAssignmentError] = React.useState("")
 
   return (
     <>
@@ -30,6 +37,11 @@ export const Party = () => {
             <p>{party.notes}</p>
           </>
         ) : null}
+        <p>Have gifters already been assigned? {party.assignedAt ? "Yes" : "No"}</p>
+        <p>
+          Who were you assigned? (Only you can see this bc ur logged in...){" "}
+          <span style={{ textDecoration: "underline" }}>{"No one! lol"}</span>
+        </p>
 
         <p>
           <Link href={Routes.ParticipantsPage({ partyId: party.id })}>
@@ -43,18 +55,40 @@ export const Party = () => {
           </Link>
         </p>
 
-        <button
-          type="button"
-          onClick={async () => {
-            if (window.confirm("This will be deleted")) {
-              await deletePartyMutation({ id: party.id })
-              await router.push(Routes.PartiesPage())
-            }
-          }}
-          style={{ marginLeft: "0.5rem" }}
-        >
-          Delete
-        </button>
+        <div style={ONE_REM_MARGIN}>
+          <button
+            type="button"
+            onClick={async () => {
+              try {
+                await assignGiftersMutation({ id: party.id })
+                setAssignmentError("")
+              } catch (err) {
+                setAssignmentError(
+                  err?.message || "There was an error while trying to assign gifters"
+                )
+              }
+            }}
+            style={{ marginLeft: "0.5rem" }}
+          >
+            Randomly Assign Gifters
+          </button>
+          {assignmentError ? <p style={ERROR_STYLE}>{assignmentError}</p> : null}
+        </div>
+
+        <div style={ONE_REM_MARGIN}>
+          <button
+            type="button"
+            onClick={async () => {
+              if (window.confirm("This will be deleted")) {
+                await deletePartyMutation({ id: party.id })
+                await router.push(Routes.PartiesPage())
+              }
+            }}
+            style={{ marginLeft: "0.5rem" }}
+          >
+            Delete
+          </button>
+        </div>
       </div>
     </>
   )
