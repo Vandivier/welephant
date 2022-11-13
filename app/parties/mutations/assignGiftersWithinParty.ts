@@ -8,7 +8,7 @@ const AssignGiftersWithinParty = z.object({
 
 type SuperParty = null | (Party & { participants: Participant[] })
 
-const scramble = <T>(arr: T): T => {
+const scramble = <T>(arr: T[]): T[] => {
   if (!Array.isArray(arr)) throw new Error("Must call scramble with an array arg")
   const clone = [...arr]
   const scrambled: any[] = []
@@ -19,7 +19,7 @@ const scramble = <T>(arr: T): T => {
     scrambled.push(arrRandom[0])
   }
 
-  return scrambled as T
+  return scrambled
 }
 
 export default resolver.pipe(
