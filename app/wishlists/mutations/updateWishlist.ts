@@ -17,11 +17,17 @@ export default async function UpdateWishlist(input, ctx: Ctx) {
     userIdWisher: ctx.session.userId,
   })
 
-  // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const wishlist = await db.wishlist.update({
+  const wishlistBeforeUpdate = await db.wishlist.findUnique({ where: { id: validatedInput.id } })
+
+  if (!wishlistBeforeUpdate) throw new Error("Wishlist Not Found")
+  if (wishlistBeforeUpdate.userIdWisher !== ctx.session.userId) {
+    throw new Error("Permission Error")
+  }
+
+  const wishlistAfterUpdate = await db.wishlist.update({
     where: { id: validatedInput.id },
     data: validatedInput,
   })
 
-  return wishlist
+  return wishlistAfterUpdate
 }

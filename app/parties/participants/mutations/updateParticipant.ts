@@ -1,12 +1,13 @@
 import { resolver } from "@blitzjs/rpc"
-import db, { ParticipantStatus, Prisma } from "db"
+import db, { ParticipantStatus } from "db"
 import { z } from "zod"
+import { handleParticipantUserAssociation, MassagedParticipant } from "../utils"
 
 const UpdateParticipant = z.object({
   id: z.number(),
   isAttending: z.boolean(),
   isGifter: z.boolean(),
-  email: z.string().optional(),
+  email: z.string().email().optional().or(z.literal("")),
   name: z.string(),
   partyId: z.number(),
 })
@@ -19,9 +20,10 @@ export default resolver.pipe(
     const status: ParticipantStatus = isAttending
       ? ParticipantStatus.ACCEPTED
       : ParticipantStatus.DECLINED
-    const massaged = { ...dataToKeep, status }
-    const participant = await db.participant.update({ where: { id }, data: massaged })
 
+    const massaged: MassagedParticipant = { ...dataToKeep, status }
+    const participant = await db.participant.create({ data: massaged })
+    await handleParticipantUserAssociation(massaged, participant.id)
     return participant
   }
 )

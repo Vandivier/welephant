@@ -8,20 +8,22 @@ datasource db {
 }
 
 model User {
-  id                  Int            @id @default(autoincrement())
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
-  name                String?
-  email               String         @unique
-  hashedPassword      String?
-  role                String         @default("USER")
-  participantProfiles Participant[]
-  parties             Party[]
-  sessions            Session[]
-  tokens              Token[]
-  wishlists           Wishlist[]     @relation("user-wished-list")
-  purchasedItems      WishlistItem[] @relation("user-purchased-items")
-  wishlistItems       WishlistItem[] @relation("user-wished-items")
+  id                          Int            @id @default(autoincrement())
+  createdAt                   DateTime       @default(now())
+  updatedAt                   DateTime       @updatedAt
+  name                        String?
+  email                       String         @unique
+  hashedPassword              String?
+  role                        String         @default("USER")
+  participantProfiles         Participant[]  @relation("participant-user-id")
+  participantProfilesToGift   Participant[]  @relation("participant-user-id-to-gift")
+  participantProfilesGiftedBy Participant[]  @relation("participant-user-id-gifted-by")
+  parties                     Party[]
+  sessions                    Session[]
+  tokens                      Token[]
+  wishlists                   Wishlist[]     @relation("user-wished-list")
+  purchasedItems              WishlistItem[] @relation("user-purchased-items")
+  wishlistItems               WishlistItem[] @relation("user-wished-items")
 }
 
 model Session {
@@ -80,17 +82,21 @@ model Wishlist {
 }
 
 model Participant {
-  id        Int               @id @default(autoincrement())
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt
-  isGifter  Boolean           @default(false)
-  name      String
-  email     String?
-  status    ParticipantStatus @default(PENDING)
-  partyId   Int
-  userId    Int?
-  Party     Party             @relation(fields: [partyId], references: [id])
-  User      User?             @relation(fields: [userId], references: [id])
+  id             Int               @id @default(autoincrement())
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  isGifter       Boolean           @default(false)
+  name           String
+  email          String?
+  status         ParticipantStatus @default(PENDING)
+  partyId        Int
+  userId         Int?
+  userIdToGift   Int?
+  userIdGiftedBy Int?
+  Party          Party             @relation(fields: [partyId], references: [id])
+  User           User?             @relation("participant-user-id", fields: [userId], references: [id])
+  UserToGift     User?             @relation("participant-user-id-to-gift", fields: [userIdToGift], references: [id])
+  UserGiftedBy   User?             @relation("participant-user-id-gifted-by", fields: [userIdGiftedBy], references: [id])
 }
 
 model Party {
