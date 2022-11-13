@@ -48,7 +48,7 @@ export const EditWishlistItem = () => {
               })
               await setQueryData(updated)
               await router.push({
-                pathname: `/wishlistItems/[wishlistItemId]`,
+                pathname: `/wishlist-items/[wishlistItemId]`,
                 query: { wishlistItemId: updated.id },
               })
             } catch (error: any) {

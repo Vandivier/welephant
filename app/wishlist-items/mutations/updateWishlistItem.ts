@@ -1,5 +1,5 @@
 import { Ctx } from "blitz"
-import db from "db"
+import db, { WishlistItem } from "db"
 import { z } from "zod"
 
 const UpdateWishlistItemInput = z.object({
@@ -13,15 +13,21 @@ const UpdateWishlistItemInput = z.object({
 export default async function UpdateWishlistItem(input, ctx: Ctx) {
   ctx.session.$isAuthorized()
 
-  // TODO: ui form is not passing the zod details
-  // this check will currently always fail functional testing
   const validatedInput = UpdateWishlistItemInput.parse(input)
 
-  // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const wishlistItem = await db.wishlistItem.update({
+  const wishlistItemBeforeUpdate: WishlistItem | null = await db.wishlistItem.findUnique({
+    where: { id: input.id },
+  })
+
+  if (!wishlistItemBeforeUpdate) throw new Error("Wishlist Item Not Found")
+  if (wishlistItemBeforeUpdate.userIdWisher !== ctx.session.userId) {
+    throw new Error("Permission Error")
+  }
+
+  const wishlistItemAfterUpdate = await db.wishlistItem.update({
     where: { id: input.id },
     data: validatedInput,
   })
 
-  return wishlistItem
+  return wishlistItemAfterUpdate
 }

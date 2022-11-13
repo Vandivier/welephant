@@ -32,6 +32,13 @@ export default resolver.pipe(
   async ({ id, ...input }, ctx) => {
     ctx.session.$isAuthorized()
 
+    const partyBeforeUpdate = await db.party.findUnique({ where: { id } })
+
+    if (!partyBeforeUpdate) throw new Error("Party Not Found")
+    if (partyBeforeUpdate.userId !== ctx.session.userId) {
+      throw new Error("Permission Error")
+    }
+
     const { eventTime, ...inputsToKeep } = input
     const data: Prisma.PartyUpdateInput = {
       ...inputsToKeep,
@@ -40,8 +47,8 @@ export default resolver.pipe(
         : {}),
     }
 
-    const party = await db.party.update({ where: { id }, data })
+    const partyAfterUpdate = await db.party.update({ where: { id }, data })
 
-    return party
+    return partyAfterUpdate
   }
 )
