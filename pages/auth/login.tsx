@@ -2,12 +2,14 @@ import { BlitzPage } from "@blitzjs/next"
 import Layout from "app/core/layouts/Layout"
 import { LoginForm } from "app/auth/components/LoginForm"
 import { useRouter } from "next/router"
+import { TopNav } from "app/core/components/top-nav/TopNav"
 
 const LoginPage: BlitzPage = () => {
   const router = useRouter()
 
   return (
     <Layout title="Log In">
+      <TopNav />
       <LoginForm
         onSuccess={(_user) => {
           const next = router.query.next ? decodeURIComponent(router.query.next as string) : "/"

@@ -27,15 +27,19 @@
     "@blitzjs/auth": "2.0.0-beta.12",
     "@blitzjs/next": "2.0.0-beta.12",
     "@blitzjs/rpc": "2.0.0-beta.12",
+    "@emotion/react": "11.10.5",
+    "@emotion/styled": "11.10.5",
+    "@hookform/resolvers": "2.9.9",
+    "@mui/material": "5.10.14",
+    "@mui/styles": "5.10.14",
     "@prisma/client": "4.0.0",
     "blitz": "2.0.0-beta.12",
     "next": "12.2.5",
     "prisma": "4.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "zod": "3.17.3",
     "react-hook-form": "7.37.0",
-    "@hookform/resolvers": "2.9.9"
+    "zod": "3.17.3"
   },
   "devDependencies": {
     "@next/bundle-analyzer": "12.0.8",
